@@ -1,0 +1,7 @@
+{
+  "name": "epson-printer-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
