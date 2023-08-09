@@ -32,7 +32,10 @@
               }
             ],
             "styles": ["src/theme/variables.scss", "src/global.scss"],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/extjs.js",
+              "src/assets/js/epos-2.24.0.js"
+            ]
           },
           "configurations": {
             "production": {
