@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PrintService } from '../appServices/print.service';
 declare var epson: any; 
 
 declare var externalProperty: any;
@@ -12,7 +13,14 @@ declare var externalObject: any;
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(private printService: PrintService) {}
+
+  printImage() {
+    const imagePath = 'assets/images/reciept.png';
+    this.printService.printImage(imagePath);
+  }
+
+
 
   printer(){
     const printer = new epson.ePOSDevice();
@@ -30,5 +38,6 @@ export class HomePage {
   externalObject(){
     console.log('externalObject=> ',externalObject) 
   }
+
 
 }

@@ -14,11 +14,23 @@
   </ion-header>
 
   <div id="container">
-    <ion-button expand="block" (click)="printer()">Printer</ion-button>
-    <ion-button expand="block" (click)="externalProperty()">externalProperty</ion-button>
-    <ion-button expand="block" (click)="externalFunction()">externalFunction</ion-button>
-    <ion-button expand="block" (click)="externalObject()">externalObject</ion-button>
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <div class="wrapper">
+      <div class="col">
+        <div class="reciept">
+          <img src="assets/images/reciept.png" alt="">
+        </div>
+
+      </div>
+      <div class="col">
+
+        <ion-button expand="block" (click)="printImage()">printImage</ion-button>
+        <ion-button expand="block" (click)="printer()">Printer</ion-button>
+        <ion-button expand="block" (click)="externalProperty()">externalProperty</ion-button>
+        <ion-button expand="block" (click)="externalFunction()">externalFunction</ion-button>
+        <ion-button expand="block" (click)="externalObject()">externalObject</ion-button>
+        <strong>Ready to create an app?</strong>
+        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      </div>
+    </div>
   </div>
 </ion-content>
