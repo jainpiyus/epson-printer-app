@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PrintService } from '../appServices/print.service';
+import { PrintEpsonService } from '../appServices/print-epson.service';
 declare var epson: any; 
 
 declare var externalProperty: any;
@@ -13,8 +14,15 @@ declare var externalObject: any;
 })
 export class HomePage {
 
-  constructor(private printService: PrintService) {}
+  constructor(
+    private printService: PrintService,
+    private printEpsonService: PrintEpsonService,
+    ) {}
 
+  printEpson() {
+    this.printEpsonService.connectToPrinter();
+  }
+  
   printImage() {
     const imagePath = 'assets/images/reciept.png';
     this.printService.printImage(imagePath);
