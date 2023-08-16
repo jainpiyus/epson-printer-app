@@ -21,6 +21,14 @@ export class HomePage {
     private usbPrintService: UsbPrintService,
     ) {}
 
+  getConnectedUsbSerialList() {
+    this.usbPrintService.getConnectedUsbSerialList();
+  }
+
+  printImageWithUsb() {
+    const imagePath = 'assets/images/reciept.png';
+    this.usbPrintService.printImage(imagePath);
+  }
   printEpson() {
     this.printEpsonService.connectToPrinter();
   }
@@ -28,10 +36,6 @@ export class HomePage {
   printImage() {
     const imagePath = 'assets/images/reciept.png';
     this.printService.printImage(imagePath);
-  }
-  printImageWithUsb() {
-    const imagePath = 'assets/images/reciept.png';
-    this.usbPrintService.printImage(imagePath);
   }
 
 
