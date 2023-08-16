@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PrintService } from '../appServices/print.service';
 import { PrintEpsonService } from '../appServices/print-epson.service';
+import { UsbPrintService } from '../appServices/usbprint.service';
 declare var epson: any; 
 
 declare var externalProperty: any;
@@ -17,6 +18,7 @@ export class HomePage {
   constructor(
     private printService: PrintService,
     private printEpsonService: PrintEpsonService,
+    private usbPrintService: UsbPrintService,
     ) {}
 
   printEpson() {
@@ -26,6 +28,10 @@ export class HomePage {
   printImage() {
     const imagePath = 'assets/images/reciept.png';
     this.printService.printImage(imagePath);
+  }
+  printImageWithUsb() {
+    const imagePath = 'assets/images/reciept.png';
+    this.usbPrintService.printImage(imagePath);
   }
 
 
