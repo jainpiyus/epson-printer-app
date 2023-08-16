@@ -49,6 +49,10 @@ export class UsbPrintService {
     try {
       const device = await usb.requestDevice({ filters: [] });
       console.log('USB Device:', device);
+      // Get the connected device's port information
+      const portInfo = await device.getPorts();
+
+      console.log('Port Information:', portInfo);
       this.connectedDevices.push(device);
     } catch (error) {
       console.error('Error:', error);
