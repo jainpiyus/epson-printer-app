@@ -24,10 +24,12 @@ export class HomePage {
   getConnectedUsbSerialList() {
     this.usbPrintService.getConnectedUsbSerialList();
   }
+  bluetoothPrint() {
+  }
 
   printImageWithUsb() {
     const imagePath = 'assets/images/reciept.png';
-    this.usbPrintService.printImage(imagePath);
+    this.usbPrintService.printImageWithUsb(imagePath);
   }
   printEpson() {
     this.printEpsonService.connectToPrinter();

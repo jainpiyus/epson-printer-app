@@ -11,17 +11,22 @@ export class UsbPrintService {
   constructor() {}
   connectedDevices: any[] = [];
 
-  printImage(imagePath: string) {
+  selectedPrinterName:any;
+
+  async printImageWithUsb(imagePath: string) {
     // Initialize the Epson ePOS SDK and configure printer settings
     const ePosDev = new epson.ePOSDevice();
+    console.log('ePosDev: ', ePosDev);
     
     // Callback function for connection
     const callback_connect = (result: string) => {
+      console.log('result: ', result);
       if (result === 'OK' || result === 'SSL_CONNECT_OK') {
         console.log('Connected to the printer');
         
         // Get the Printer object using TYPE_SIMPLE_SERIAL
         ePosDev.createDevice('local_printer', ePosDev.DEVICE_TYPE_PRINTER, { type: ePosDev.TYPE_SIMPLE_SERIAL }, (printer: any, retcode: string) => {
+          console.log('printer=> ',printer)
           if (retcode === 'OK') {
             // Set printer properties and print
             printer.timeout = 60000;
@@ -29,7 +34,7 @@ export class UsbPrintService {
             // Add print commands to the printer
             printer.addText('Printing from Ionic Angular');
             printer.addImage(imagePath, 0, 0, 384, 240, 0);
-
+            
             // Perform actual printing
             printer.send();
           } else {
@@ -42,18 +47,22 @@ export class UsbPrintService {
     };
 
     // Connect to the printer using USB communication
-    ePosDev.connect('usb://', '0', callback_connect);
+    // ePosDev.connect(`usb://ESDPRT001`, '001', callback_connect);
+    // ePosDev.connect(`usb://EPSON TM-m30 Receipt5`, '', callback_connect);
+    ePosDev.connect('usb://', callback_connect);
   }
 
   async getConnectedUsbSerialList() {
     try {
       const device = await usb.requestDevice({ filters: [] });
-      console.log('USB Device:', device);
-      // Get the connected device's port information
-      const portInfo = await device.getPorts();
+      console.log('Device:', device);
+      console.log('USB Device:', device.productName);
+      this.selectedPrinterName = device.productName;
+      // // Get the connected device's port information
+      // const portInfo = await device.getPorts();
 
-      console.log('Port Information:', portInfo);
-      this.connectedDevices.push(device);
+      // console.log('Port Information:', portInfo);
+      // this.connectedDevices.push(device);
     } catch (error) {
       console.error('Error:', error);
     }

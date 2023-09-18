@@ -17,7 +17,7 @@ export class PrintEpsonService {
     // Connect to the device
     this.ePosDev.connect('192.168.192.168', '8008', (resultConnect: string) => {
       this.callbackConnect(resultConnect);
-      debugger
+      // debugger
     });
   }
 
