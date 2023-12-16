@@ -1,7 +1,7 @@
 # Git l
 - Create a new branch and publish
-    - `git checkout -b branchName`
-    - `git push --set-upstream origin branchName`
+    - `git checkout -b nodePrint`
+    - `git push --set-upstream origin nodePrint`
 
 # Step 1: Build: 
 `ionic build`
