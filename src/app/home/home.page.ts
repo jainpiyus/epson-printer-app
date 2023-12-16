@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PrintService } from '../appServices/print.service';
 import { PrintEpsonService } from '../appServices/print-epson.service';
 import { UsbPrintService } from '../appServices/usbprint.service';
+import { BluetoothPrintService } from '../appServices/bluetooth-print.service';
 declare var epson: any; 
 
 declare var externalProperty: any;
@@ -19,12 +20,15 @@ export class HomePage {
     private printService: PrintService,
     private printEpsonService: PrintEpsonService,
     private usbPrintService: UsbPrintService,
+    private bluetoothPrintService: BluetoothPrintService,
     ) {}
 
   getConnectedUsbSerialList() {
     this.usbPrintService.getConnectedUsbSerialList();
   }
   bluetoothPrint() {
+    const imagePath = 'assets/images/reciept.png';
+    this.bluetoothPrintService.printImageWithBluetooth(imagePath);
   }
 
   printImageWithUsb() {
