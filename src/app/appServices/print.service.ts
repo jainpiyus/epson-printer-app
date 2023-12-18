@@ -8,7 +8,9 @@ declare var epson: any;
 export class PrintService {
   constructor(private http: HttpClient) {}
 
-  api:string = 'http://127.0.0.1:5001/epsonpr/us-central1/printReceipt';
+  api:string = 'https://us-central1-mctastio.cloudfunctions.net/api/printer/printReceipt';
+  // api:string = 'http://localhost:5001/mctastio/us-central1/api/printer/printReceipt';
+  // api2:string = 'http://127.0.0.1:5001/mctastio/us-central1/test';
 
   printReceipt() {
     const inputData = {
