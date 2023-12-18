@@ -10,10 +10,11 @@ export class HomePage {
 
   constructor(
     private printService: PrintService,
+    
     ) {}
 
-    printer(){
-      
+    print(){
+      this.printService.printReceipt();
     }
 
 

@@ -1,11 +1,30 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 declare var epson: any; 
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrintService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
+
+  api:string = 'http://127.0.0.1:5001/epsonpr/us-central1/printReceipt';
+
+  printReceipt() {
+    const inputData = {
+      title: 'Hello World!',
+      date: '07-08-2021',
+      // Add any other data you need for the receipt
+    };
+    this.http.post(this.api, inputData).subscribe(
+      (response) => {
+        console.log('Receipt printed successfully');
+      },
+      (error) => {
+        console.error('Error printing receipt:', error);
+      }
+    );
+  }
 
   printImage(imagePath: string) {
     // Initialize the Epson ePOS SDK and configure printer settings
