@@ -1,7 +1,7 @@
 # Git l
 - Create a new branch and publish
-    - `git checkout -b nodePrint`
-    - `git push --set-upstream origin nodePrint`
+    - `git checkout -b fireprint`
+    - `git push --set-upstream origin fireprint`
 
 # Step 1: Build: 
 `ionic build`
