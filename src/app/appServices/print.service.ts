@@ -8,7 +8,9 @@ declare var epson: any;
 export class PrintService {
   constructor(private http: HttpClient) {}
 
-  api:string = 'https://us-central1-mctastio.cloudfunctions.net/api/printer/printReceipt';
+  // api:string = 'https://us-central1-mctastio.cloudfunctions.net/api/printer/printReceipt';
+  api:string = 'https://squid-app-zujri.ondigitalocean.app';
+  // api:string = 'http://localhost:3000';
   // api:string = 'http://localhost:5001/mctastio/us-central1/api/printer/printReceipt';
   // api2:string = 'http://127.0.0.1:5001/mctastio/us-central1/test';
 
@@ -18,7 +20,9 @@ export class PrintService {
       date: '07-08-2021',
       // Add any other data you need for the receipt
     };
-    this.http.post(this.api, inputData).subscribe(
+    
+    // this.http.post(this.api, inputData).subscribe(
+    this.http.get(this.api).subscribe(
       (response) => {
         console.log('Receipt printed successfully');
       },
