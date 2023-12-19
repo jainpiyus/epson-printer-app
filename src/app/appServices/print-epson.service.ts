@@ -100,15 +100,14 @@ export class PrintEpsonService {
   }
 
   private print() {
-    // Create the printing data
-    // this.printer.addText('Hello');
-    // const htmlContent = '<html><body><h1>Hello, Printer Anup!</h1></body></html>';
-    // this.printer.addText(htmlContent, { type: 'html' });
+    
 
-    // // Send a line feed and cut the paper
-    // this.printer.addText('Hello\n');
-    // this.printer.addCommand('\x1B' + 'd' + '\x09'); // ESC d 9 (cut)
 
+    this.printer.addLayout(this.printer.LAYOUT_RECEIPT, 800, 0, 0, 0, 35, 0);
+    this.printer.addTextAlign(this.printer.ALIGN_CENTER);
+    this.printer.addTextSmooth(true);
+    this.printer.addText('\n');
+    this.printer.addText('\n');
 
     this.printer.addTextDouble(true, true);
     this.printer.addText('Tastio' + '\n');
@@ -136,9 +135,11 @@ export class PrintEpsonService {
     this.printer.addTextDouble(false, true);
     this.printer.addText('* SALE RECEIPT *\n');
     this.printer.addTextDouble(false, false);
-
+    
+    this.printer.addText('****************\n');
+    this.printer.addText('\n');
+    this.printer.addText('\n');
     this.printer.addCut(this.ePosDev.CUT_FEED);
-
     // Send the printing data
     this.printer.send();
 
