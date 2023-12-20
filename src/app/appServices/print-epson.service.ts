@@ -27,7 +27,7 @@ export class PrintEpsonService {
   connectToPrinter(ip:string) {
     this.connecting = true;
     this.consolelog('Connecting to printer...')
-    this.ePosDev.connect(ip, '9100', (resultConnect: string) => {
+    this.ePosDev.connect(ip, '8043', (resultConnect: string) => {
       this.callbackConnect(resultConnect);
     });
   }

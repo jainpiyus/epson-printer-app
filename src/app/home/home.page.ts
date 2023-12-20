@@ -18,7 +18,7 @@ export class HomePage {
   };
   printerlogs:string[]=[];
 
-  selectedIpPrinter:string = '192.168.1.40'; // i.e. '192.168.1.40'
+  selectedIpPrinter:string = '192.168.0.106'; // i.e. '192.168.1.40'
   isIpValid: boolean = true;
 
   constructor(
