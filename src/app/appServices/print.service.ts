@@ -1,65 +1,38 @@
 import { Injectable } from '@angular/core';
-
-declare var epson: any;
+import { ThermalPrinter, printer, types } from '@pillowstudio/node-thermal-printer';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrintService {
-  private ePosDev: any;
-  private printer: any = null;
+  private printer: printer;
 
   constructor() {
-    this.ePosDev = new epson.ePOSDevice();
-  }
-
-  connectToPrinter() {
-    this.ePosDev.connect('192.168.0.106', '9100', (resultConnect: string) => {
-      this.callbackConnect(resultConnect);
+    this.printer = new ThermalPrinter({
+      type: types.EPSON, // Adjust the printer type as needed
+      interface: 'tcp://192.168.0.106:9100', // Replace with your printer's IP address and port
+      options: {
+        timeout: 5000,
+      },
     });
+
+    this.printer.setCharacterSet('');
   }
 
-  private callbackConnect(resultConnect: string) {
-    if (resultConnect === 'OK' || resultConnect === 'SSL_CONNECT_OK') {
-      this.ePosDev.createDevice(
-        'local_printer',
-        this.ePosDev.DEVICE_TYPE_PRINTER,
-        { crypto: false, buffer: false },
-        (deviceObj: any, retcode: string) => {
-          this.callbackCreateDevice(deviceObj, retcode);
-        }
-      );
-    } else {
-      console.error('Connection error:', resultConnect);
+  printText(text: string) {
+    this.printer.setTextSize(1, 1);
+    this.printer.text(text);
+  }
+
+  cutPaper() {
+    this.printer.cut();
+  }
+
+  async executePrintJob() {
+    try {
+      await this.printer.execute();
+    } catch (error) {
+      console.error('Printing error:', error);
     }
-  }
-
-  private callbackCreateDevice(deviceObj: any, retcode: string) {
-    if (retcode === 'OK') {
-      this.printer = deviceObj;
-      this.printer.timeout = 60000;
-
-      this.printer.onreceive = (res: any) => {
-        console.log('Print result:', res.success);
-        // You can handle printing completion here
-        this.disconnectFromPrinter();
-      };
-
-      this.print();
-    } else {
-      console.error('Error creating device:', retcode);
-    }
-  }
-
-  private print() {
-    // Example: Adding text to the printer
-    this.printer.addText('Hello, Printer!');
-
-    // Send the printing data
-    this.printer.send();
-  }
-
-  disconnectFromPrinter() {
-    this.ePosDev.disconnect();
   }
 }

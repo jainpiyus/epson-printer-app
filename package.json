@@ -29,6 +29,7 @@
     "@ionic-native/bluetooth-serial": "^5.36.0",
     "@ionic-native/core": "^5.36.0",
     "@ionic/angular": "^7.0.0",
+    "@pillowstudio/node-thermal-printer": "^4.2.0-xp",
     "cordova-plugin-bluetooth-serial": "^0.4.7",
     "cordova-plugin-usb-event": "^1.0.2",
     "ionicons": "^7.0.0",
