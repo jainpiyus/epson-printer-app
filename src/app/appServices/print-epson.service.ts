@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 declare var epson: any;
 
 @Injectable({
@@ -8,67 +9,33 @@ export class PrintEpsonService {
   private ePosDev: any; // Declare the ePosDev object
   private printer: any = null; // Declare the printer object
 
+  connected:boolean = false;
+  connecting:boolean = false;
+  printerlogs = new Subject<string>();
+
+
   constructor() {
     // Initialize the ePosDev object
     this.ePosDev = new epson.ePOSDevice();
   }
 
-
-  // 
-  ESC = String.fromCharCode(27);
-
-  // Function to convert HTML text to ESC/POS text
-  htmlToEscPos(htmlText: string): string {
-    // Replace or process HTML-specific elements
-    const processedText = htmlText
-      .replace(/<\/?strong>/g, this.ESC + '|bC') // Bold text
-      .replace(/<br>/g, this.ESC + '|1lF') // Line feed
-    // Add more replacements as needed
-
-    return processedText;
+  consolelog(log){
+    console.log('PrintLogs: ', log)
+    this.printerlogs.next(log);
   }
 
-  // Function to convert HTML table to ESC/POS commands
-  htmlTableToEscPos(htmlTable: string): string {
-    // Replace or process table-specific elements
-    const processedTable = htmlTable
-      .replace(/<\/?table>/g, '') // Remove table tags
-      .replace(/<\/?tr>/g, this.ESC + '|1lF') // Line feed for each row
-      .replace(/<\/?td>/g, this.ESC + '|1lF') // Line feed for each cell
-    // Add more replacements as needed
-
-    return processedTable;
-  }
-
-  // 
-  // connectToPrinter(): Promise<void> {
-  //   return new Promise<void>((resolve, reject) => {
-  //     // Connect to the device
-  //     this.ePosDev.connect('192.168.0.106', '9100', (resultConnect: string) => {
-  //       if (resultConnect === 'OK' || resultConnect === 'SSL_CONNECT_OK') {
-  //         // Connection successful, resolve the Promise
-  //         this.callbackConnect(resultConnect);
-  //         resolve();
-  //       } else {
-  //         // Connection error, reject the Promise
-  //         console.error('Connection error:', resultConnect);
-  //         reject(new Error('Connection error'));
-  //       }
-  //     });
-  //   });
-  // }
-
-  connectToPrinter() {
-    // Connect to the device
-    this.ePosDev.connect('192.168.0.106', '9100', (resultConnect: string) => {
+  connectToPrinter(ip:string) {
+    this.connecting = true;
+    this.consolelog('Connecting to printer...')
+    this.ePosDev.connect(ip, '9100', (resultConnect: string) => {
       this.callbackConnect(resultConnect);
-      // debugger
     });
   }
 
   private callbackConnect(resultConnect: string) {
     if (resultConnect === 'OK' || resultConnect === 'SSL_CONNECT_OK') {
       // Get the Printer object
+      this.consolelog("connected to ePOS Device Service Interface.");
       this.ePosDev.createDevice(
         'local_printer',
         this.ePosDev.DEVICE_TYPE_PRINTER,
@@ -79,6 +46,8 @@ export class PrintEpsonService {
       );
     } else {
       // Display the error message
+      this.connecting = false;
+			this.consolelog("connected to ePOS Device Service Interface is failed. [" + resultConnect + "]");
       console.error('Connection error:', resultConnect);
     }
   }
@@ -91,19 +60,21 @@ export class PrintEpsonService {
       // Register the printing complete event
       this.printer.onreceive = (res: any) => {
         console.log('Print result:', res.success);
+			  this.consolelog('Print' + (res.success ? 'Success' : 'Failure') + '\nCode:' + res.code + '\nBattery:' + res.battery + '\n');
       };
-      this.print();
-
+      this.connected = true;
+      this.connecting = false;
+      this.consolelog("you can use printer.");
     } else {
+      this.connecting = false;
+      this.consolelog('Error creating device: '+ retcode)
       console.error('Error creating device:', retcode);
     }
   }
 
-  private print() {
-    
+  print() {
+    if(!this.connected) return;
 
-    
-    this.printer.addTextLang('en');
     this.printer.addLayout(this.printer.LAYOUT_RECEIPT, 800, 0, 0, 0, 35, 0);
     this.printer.addTextAlign(this.printer.ALIGN_CENTER);
     this.printer.addTextSmooth(true);
@@ -138,6 +109,10 @@ export class PrintEpsonService {
     this.printer.addTextDouble(false, false);
     
     this.printer.addText('****************\n');
+    this.printer.addText('\n');
+    this.printer.addText('\n');
+    this.printer.addBarcode('12345', this.printer.BARCODE_CODE39, this.printer.HRI_NONE, this.printer.FONT_A, 2, 32);
+
     this.printer.addText('\n');
     this.printer.addText('\n');
     this.printer.addCut(this.ePosDev.CUT_FEED);

@@ -10,19 +10,45 @@ declare var epson: any;
 })
 export class HomePage {
 
+  get connected(){
+    return this.printEpsonService.connected;
+  }
+  get connecting(){
+    return this.printEpsonService.connecting;
+  };
+  printerlogs:string[]=[];
+
+  selectedIpPrinter:string = '192.168.1.40'; // i.e. '192.168.1.40'
+  isIpValid: boolean = true;
+
   constructor(
     private printService: PrintService,
     private printEpsonService: PrintEpsonService,
-    ) {}
+    ) {
+      this.subscribePrintLogs();
+    }
     
-    
-  printEpson() {
-    this.printEpsonService.connectToPrinter();
+
+
+  subscribePrintLogs(){
+    this.printEpsonService.printerlogs.subscribe(res=>{
+      this.printerlogs.push(res);
+      console.log('local printerlogs',this.printerlogs)
+    })
   }
-  
-  print() {
-    this.printService.connectToPrinter();
+    
+  onInputIpField() {
+    const ipPattern = /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/;
+    this.isIpValid = ipPattern.test(this.selectedIpPrinter);
   }
 
+  connect() {
+    this.printEpsonService.connectToPrinter(this.selectedIpPrinter);
+  }
+
+  printEpson() {
+    this.printEpsonService.print();
+  }
+  
 
 }

@@ -15,18 +15,48 @@
 
   <div id="container">
     <div class="wrapper">
-      <div class="col">
+      <!-- <div class="col">
         <div class="reciept">
           <img src="assets/images/reciept.png" alt="">
         </div>
 
-      </div>
+      </div> -->
       <div class="col">
 
-        <ion-button expand="block" (click)="printEpson()">printEpson</ion-button>
+        <p>Connected: <ion-chip [color]="connected? 'success' :'danger'">{{connected}}</ion-chip> </p>
+        
+        <ion-item class="bg-light">
+          <ion-input type="text" [(ngModel)]="selectedIpPrinter" 
+            name="ip" placeholder="IP address" 
+            (ionInput)="onInputIpField()"
+            >
+          </ion-input>
+          <ion-icon slot="end" color="warning"
+            name="wifi-outline"></ion-icon>
+        </ion-item>
+        <ion-text class="err-msg" color="danger" *ngIf="!isIpValid">
+          Invalid IP address format.
+        </ion-text>
+        <ion-button [disabled]="!isIpValid" expand="block" color="dark" fill="outline" (click)="connect()">Connect to Printer</ion-button>
+        <p class="wrapper" *ngIf="connecting">Connecting 
+          <ion-spinner name="crescent"></ion-spinner>
+        </p>
+        
+        <br>
+
+        <ion-button [disabled]="connecting || !connected" expand="block" (click)="printEpson()">Print Out</ion-button>
         <!-- <ion-button expand="block" (click)="print()">print</ion-button> -->
         <strong>Ready to create an app?</strong>
         <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      </div>
+
+      <div class="col">
+        <div class="logs">
+          <h2>Print Logs</h2>
+          <ul>
+            <li *ngFor="let log of printerlogs">{{log}}</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
