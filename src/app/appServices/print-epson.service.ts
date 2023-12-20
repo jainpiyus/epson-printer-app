@@ -102,7 +102,8 @@ export class PrintEpsonService {
   private print() {
     
 
-
+    
+    this.printer.addTextLang('en');
     this.printer.addLayout(this.printer.LAYOUT_RECEIPT, 800, 0, 0, 0, 35, 0);
     this.printer.addTextAlign(this.printer.ALIGN_CENTER);
     this.printer.addTextSmooth(true);
