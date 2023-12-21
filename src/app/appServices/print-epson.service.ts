@@ -12,7 +12,8 @@ export class PrintEpsonService {
   connected:boolean = false;
   connecting:boolean = false;
   printerlogs = new Subject<string>();
-
+  WEBSOCKET_PORT = 8008;
+  SSLWEBSOCKET_PORT = 8043
 
   constructor() {
     // Initialize the ePosDev object
@@ -27,7 +28,12 @@ export class PrintEpsonService {
   connectToPrinter(ip:string) {
     this.connecting = true;
     this.consolelog('Connecting to printer...')
-    this.ePosDev.connect(ip, '8043', (resultConnect: string) => {
+    var protocol = window.location.protocol;
+    var port = (protocol.match(/^(https:)/)) ? this.SSLWEBSOCKET_PORT : this.WEBSOCKET_PORT;
+    
+    // var protocol = (port == this.IFPORT_EPOSDEVICE) ? "http" : "https";
+
+    this.ePosDev.connect(ip, port, (resultConnect: string) => {
       this.callbackConnect(resultConnect);
     });
   }
